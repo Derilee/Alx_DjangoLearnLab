@@ -1,1 +1,1 @@
-Learning Django
+Learning Django today
