@@ -20,8 +20,8 @@ for book in all_books:
 
 # retrieve a librarian from a library
 from relationship_app.models import Librarian
-librarian = Librarian.objects.get(name = "Librarian name")
-library = Library.objects.get(library="library name")
-print(f"Librarian: {librarian.name}")
-print(f"Library: {librarian.library.name}")
+library = Library.objects.get(name= "Library name")
+librarian = Librarian.objects.get(library=library)
+print(f"librarian{librarian.name}")
+print(f"library{librarian.library.name}")
 
