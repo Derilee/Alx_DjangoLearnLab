@@ -8,7 +8,7 @@ for books in book_author:
 
 # List all books in a library
 from relationship_app.models import Library
-all_libraries = Library.objects.all()
+all_libraries = Library.objects.get(name="library_name")
 for library in all_libraries:
     all_books = library.books.all()
     print(f"library: {library}")
