@@ -20,8 +20,7 @@ for book in all_books:
 
 # retrieve a librarian from a library
 from relationship_app.models import Librarian
-Librarian_name = "some librarian name"
-aLibrarian = Librarian.objects.get(name=Librarian_name)
+aLibrarian = Librarian.objects.get(name = "Librarian name")
 print(f"Librarian: {aLibrarian.name}")
 print(f"Library: {aLibrarian.library.name}")
 
