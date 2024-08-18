@@ -9,10 +9,9 @@ for books in book_author:
 # List all books in a library
 from relationship_app.models import Library
 all_libraries = Library.objects.get(name="library_name")
-for library in all_libraries:
-    all_books = library.books.all()
-    print(f"library: {library}")
-    for book in all_books:
+all_books = all_libraries.books.all()
+print(f"library name: {all_libraries.name}")
+for book in all_books:
         print(f"book:{book.title}")
 
 
