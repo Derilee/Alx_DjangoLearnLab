@@ -1,0 +1,9 @@
+<!-- myapp/templates/home.html -->
+
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Welcome to the Library App</h1>
+  <p>This is the home page.</p>
+  <p><a href="{% url 'signup' %}">Sign Up</a> | <a href="{% url 'login' %}">Log In</a></p>
+{% endblock %}
