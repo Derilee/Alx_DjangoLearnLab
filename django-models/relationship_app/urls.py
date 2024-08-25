@@ -1,11 +1,13 @@
-from django.urls import path, include
-from django.contrib.auth.views import LoginView, LogoutView
-from .views import ProfileView, SignUpView
-from django.views.generic import TemplateView
+from django.urls import path
+from .views import CustomLoginView, CustomLogoutView, SignUpView
+from .views import HomeView
+# from .views import views
+# SignUpView
 
 urlpatterns = [
-    path('signup/', SignUpView.as_view(), name='signup'),  # User signup
-    path('profile/', ProfileView.as_view(), name='profile'),  # User profile
-    path('login/', LoginView.as_view(template_name='login.html'), name='login'),  # User login
-    path('logout/', LogoutView.as_view(template_name='logout.html'), name='logout'),  # User logout
+    path('', HomeView.as_view(), name='home'),
+    path('signup/', SignUpView.as_view(), name='register'),
+    # path('register/', views.register, name='register'),
+    path('login/', CustomLoginView.as_view(), name='login'),
+    path('logout/', CustomLogoutView.as_view(), name='logout'),
 ]
