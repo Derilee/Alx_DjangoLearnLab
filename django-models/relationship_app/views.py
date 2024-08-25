@@ -20,6 +20,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView
 from django.views.decorators.http import require_http_methods
 from django.contrib.auth import logout
+# from django.contrib.auth import login
 from django.shortcuts import redirect
 
 # Registration view
