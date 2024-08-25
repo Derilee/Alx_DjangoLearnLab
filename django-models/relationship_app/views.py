@@ -29,21 +29,20 @@ def register(request):
         form = UserCreationForm()
     return render(request, 'register.html', {'form': form})
 
-# def user_login(request):
-#     if request.method == 'POST':
-#         form = AuthenticationForm(data=request.POST)
-#         if form.is_valid():
-#             user = form.get_user()
-#             login(request, user)
-#             return redirect('home')
-#     else:
-#         form = AuthenticationForm()
-#     return render(request, 'login.html', {'form': form})
+def user_login(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            return redirect('home')
+    else:
+        form = AuthenticationForm()
+    return render(request, 'login.html', {'form': form})
 
-# def user_logout(request):
-#     logout(request)
-#     # return render(request, 'login.html')
-#     return redirect('login')
+def user_logout(request):
+    logout(request)
+    return redirect('login')
 
 @login_required
 def profile(request):
