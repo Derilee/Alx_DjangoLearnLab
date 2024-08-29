@@ -5,7 +5,7 @@ server:
 	python manage.py migrate
 	python manage.py runserver
 
-gitrun:
+git:
 	git add .
 	git commit -m "Introduction to Building APIs with Django REST Framework"
 	git push
