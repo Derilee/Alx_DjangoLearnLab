@@ -1,4 +1,4 @@
-.PHONY: server
+.PHONY: allcommands
 
 server:
 	python manage.py makemigrations
