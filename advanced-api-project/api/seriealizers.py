@@ -10,7 +10,7 @@ class AuthorSerializer(serializers.ModelSerializer):
 
 #Book model is serialized here
 class BookSerializer(serializers.ModelSerializer):
-    author_details = AuthorSerializer(many=True, read_only=True) #A new field is added here to handle relationships between the models by nesting the serializer
+    multiple_authors = AuthorSerializer(many=True, read_only=True) #A new field is added here to handle relationships between the models by nesting the serializer
 
     class Meta:
         model = Book
