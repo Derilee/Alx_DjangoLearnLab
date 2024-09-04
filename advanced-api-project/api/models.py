@@ -1,4 +1,4 @@
-from django.db import models
+from django.db import models # type: ignore
 
 # Author model is created here with the name field
 class Author(models.Model):
