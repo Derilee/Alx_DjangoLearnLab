@@ -9,7 +9,7 @@ class AuthorSerializer(serializers.Serializer):
         fields = ['name']
 
 #Book model is serialized here
-class BookSerializer(serializers.Serializer):
+class BookSerializer(serializers.ModelSerializer):
     author_details = AuthorSerializer(read_only=True) #A new field is added here to handle relationships between the models by nesting the serializer
 
     class Meta:
