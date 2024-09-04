@@ -22,5 +22,4 @@ class BookSerializer(serializers.Serializer):
         if value > current_year:
             raise serializers.ValidationError("Year can't be in the future")
         return value
-
-
+    

@@ -11,5 +11,3 @@ class Book(models.Model):
     publication_year = models.IntegerField()
     author = models.ForeignKey(Author, on_delete=models.CASCADE) #author is referenced to the Author model as a foreign key. in this case, it shows one to many relationship which means a book can have only one author but one author can author many books
 
-
-
