@@ -2,7 +2,7 @@
 
 git:
 	git add .
-	git commit "Advanced API Development with Django REST Framework"
+	git commit -m "Advanced API Development with Django REST Framework"
 	git push
 
 server:
@@ -16,7 +16,7 @@ migrate:
 
 gitall:
 	git add -A
-	git commit "Advanced API Development with Django REST Framework"
+	git commit -m "Advanced API Development with Django REST Framework"
 	git push
 
 superuser:
