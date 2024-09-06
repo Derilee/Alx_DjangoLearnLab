@@ -22,7 +22,8 @@ class BookSerializer(serializers.ModelSerializer):
         if value > current_year:
             raise serializers.ValidationError("Year can't be in the future")
         return value
-    
+
+# we validate the title to make sure no user add an existing book to the database 
     def validate_title(self, value):
         if Book.objects.filter(title=value).exists():
             raise serializers.ValidationError("Book already exists")

@@ -7,62 +7,83 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.exceptions import PermissionDenied
 
 
+# AuthorListView: Handles retrieving all authors and creating new authors.
+# Anyone can view the authors (read-only access), but only authenticated users can add new authors.
 class AuthorListView(generics.ListCreateAPIView):
-    queryset = Author.objects.all()
-    serializer_class = AuthorSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    queryset = Author.objects.all()  # Fetches all authors from the database
+    serializer_class = AuthorSerializer  # Uses AuthorSerializer to display the data
+    permission_classes = [IsAuthenticatedOrReadOnly]  # Authenticated users can add, but anyone can view
 
+
+# AuthorDetailView: Handles retrieving, updating, or deleting a specific author by their ID.
+# Anyone can view the details of an author, but only authenticated users can update or delete them.
 class AuthorDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Author.objects.all()
-    serializer_class = AuthorSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    queryset = Author.objects.all()  # Fetches all authors
+    serializer_class = AuthorSerializer  # Uses AuthorSerializer for displaying and updating
+    permission_classes = [IsAuthenticatedOrReadOnly]  # Authenticated users can edit, others can only view
 
+
+# BookListView: Handles retrieving all books in the database.
+# Anyone can view the list of books.
 class BookListView(generics.ListAPIView):
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    queryset = Book.objects.all()  # Fetches all books
+    serializer_class = BookSerializer  # Uses BookSerializer to display book data
+    permission_classes = [IsAuthenticatedOrReadOnly]  # Read-only access for unauthenticated users
 
 
+# BookDetailView: Handles retrieving details of a specific book by its ID.
+# Anyone can view the details of a book.
 class BookDetailView(generics.RetrieveAPIView):
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    queryset = Book.objects.all()  # Fetches a specific book by its ID
+    serializer_class = BookSerializer  # Uses BookSerializer to display the details of the book
+    permission_classes = [IsAuthenticatedOrReadOnly]  # Only view access, no edit without authentication
 
 
+# BookCreateView: Allows authenticated users to create new books.
+# Only authenticated users can add new books to the system.
 class BookCreateView(generics.CreateAPIView):
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
-    
+    queryset = Book.objects.all()  # Fetches all books
+    serializer_class = BookSerializer  # Uses BookSerializer for creating new books
+    authentication_classes = [TokenAuthentication]  # Requires token-based authentication
+    permission_classes = [IsAuthenticated]  # Only authenticated users can create books
+
+    # Override the method to add custom behavior when creating a book
     def perform_create(self, serializer):
+        # Check if the user is authenticated
         if not self.request.user.is_authenticated:
-            raise PermissionDenied("Only Authenticated users can create Books")
-        serializer.save()
-    
+            raise PermissionDenied("Only authenticated users can create books")
+        serializer.save()  # Save the new book if authentication passes
 
+
+# BookUpdateView: Allows authenticated users to update book details.
+# The user must be authenticated to edit the book.
 class BookUpdateView(generics.UpdateAPIView):
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
-    lookup_field = 'pk'
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    queryset = Book.objects.all()  # Fetches the book to be updated
+    serializer_class = BookSerializer  # Uses BookSerializer to update the book
+    lookup_field = 'pk'  # Looks up the book by its primary key (ID)
+    authentication_classes = [TokenAuthentication]  # Requires token-based authentication
+    permission_classes = [IsAuthenticated]  # Only authenticated users can update books
 
-
+    # Override the method to add custom behavior when updating a book
     def perform_update(self, serializer):
+        # Check if the user is authenticated
         if not self.request.user.is_authenticated:
-            raise PermissionDenied("Only Authenticated users can update books")
-        serializer.save()
+            raise PermissionDenied("Only authenticated users can update books")
+        serializer.save()  # Save the updated book if authentication passes
 
 
+# BookDeleteView: Allows authenticated users to delete books.
+# Only authenticated users can delete a book.
 class BookDeleteView(generics.DestroyAPIView):
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
-    lookup_field = 'pk'
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    queryset = Book.objects.all()  # Fetches the book to be deleted
+    serializer_class = BookSerializer  # Uses BookSerializer to display the book being deleted
+    lookup_field = 'pk'  # Looks up the book by its primary key (ID)
+    authentication_classes = [TokenAuthentication]  # Requires token-based authentication
+    permission_classes = [IsAuthenticated]  # Only authenticated users can delete books
 
+    # Override the method to add custom behavior when deleting a book
     def perform_destroy(self, instance):
+        # Check if the user is authenticated
         if not self.request.user.is_authenticated:
-            raise PermissionDenied("Only Authenticated users can delete books")
-        super().perform_destroy(instance)
+            raise PermissionDenied("Only authenticated users can delete books")
+        super().perform_destroy(instance)  # Perform the deletion if authentication passes
