@@ -11,8 +11,8 @@ server:
 	python manage.py runserver
 
 migrate:
-	python manage.py makemigrations
-	python manage.py migrate
+	python3 manage.py makemigrations
+	python3 manage.py migrate
 
 gitall:
 	git add -A
@@ -20,5 +20,5 @@ gitall:
 	git push
 
 superuser:
-	python manage.py createsuperuser
+	python3 manage.py createsuperuser
 

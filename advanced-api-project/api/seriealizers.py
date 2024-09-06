@@ -1,4 +1,4 @@
-from rest_framework import serializers # type: ignore
+from rest_framework import serializers
 from .models import Book, Author
 from datetime import datetime
 
@@ -14,7 +14,7 @@ class BookSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Book
-        fields = ['__all__'] #all here means all the fields in the Book model including the author_details that is nested above
+        fields = ['title', 'author', 'publication_year', 'multiple_authors'] #all here means all the fields in the Book model including the author_details that is nested above
 
 #we validate the publication year to make sure any year the user inputs isn't a future year
     def validate_publication_year(self, value):
@@ -23,3 +23,7 @@ class BookSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Year can't be in the future")
         return value
     
+    def validate_title(self, value):
+        if Book.objects.filter(title=value).exists():
+            raise serializers.ValidationError("Book already exists")
+        return value
