@@ -6,7 +6,7 @@ from rest_framework.authtoken.views import obtain_auth_token
 urlpatterns = [
     path('authors', AuthorListView.as_view(), name='author-list'),
     path('authors/<int:pk>', AuthorDetailView.as_view(),name='author-detail'),
-    path('books', BookListView.as_view(), name='book-list'),
+    path('books/', BookListView.as_view(), name='book-list'),
     path('books/create', BookCreateView.as_view(), name='create-books'),
     path('books/<int:pk>', BookDetailView.as_view(), name='books-details'),
     path('books/delete/<int:pk>', BookDeleteView.as_view(), name='delete-books'),

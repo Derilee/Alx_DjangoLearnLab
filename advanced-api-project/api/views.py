@@ -1,10 +1,11 @@
 from django.shortcuts import render
 from .models import Book, Author
-from rest_framework import generics, serializers
+from rest_framework import generics, serializers, filters
 from .seriealizers import BookSerializer, AuthorSerializer
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.exceptions import PermissionDenied
+from django_filters.rest_framework import DjangoFilterBackend
 
 
 # AuthorListView: Handles retrieving all authors and creating new authors.
@@ -29,6 +30,17 @@ class BookListView(generics.ListAPIView):
     queryset = Book.objects.all()  # Fetches all books
     serializer_class = BookSerializer  # Uses BookSerializer to display book data
     permission_classes = [IsAuthenticatedOrReadOnly]  # Read-only access for unauthenticated users
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    filterset_fields = ['title', 'author', 'publication_year']
+    search_fields = ['title', 'author__name']
+    ordering_fields = ['title', 'publication_year']
+
+    # def get_queryset(self):
+    #     queryset = Book.objects.all()
+    #     author_id = self.request.query_params.get('author')
+    #     if author_id:
+    #         queryset = queryset.filter(author__id=author_id)
+    #     return queryset
 
 
 # BookDetailView: Handles retrieving details of a specific book by its ID.
