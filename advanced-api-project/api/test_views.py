@@ -18,6 +18,8 @@ class BookAPITests(APITestCase):
         # Set token in the headers for authenticated requests
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
 
+        # self.client.login
+
         # Create an author and a book for testing
         self.author = Author.objects.create(name='George Orwell')
         self.book = Book.objects.create(
