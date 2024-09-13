@@ -1,7 +1,8 @@
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+from django.forms import ModelForm
 from django import forms
-from .models import UserProfile
+from .models import UserProfile, Post
 
 class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(required=True)
@@ -27,3 +28,8 @@ class UserProfileExtendedForm(forms.ModelForm):
         model = UserProfile
         fields = ['profile_picture', 'bio']
 
+
+class CreateUpdateBlogPost(ModelForm):
+    class Meta:
+        model = Post
+        fields = ['title', 'content']

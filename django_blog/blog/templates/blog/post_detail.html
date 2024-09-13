@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+    <article class="post-detail">
+        <h1>{{ post.title }}</h1>
+        <p>{{ post.content }}</p>
+        <a href="{% url 'post_edit' post.id %}" class="btn">Edit</a>
+        <form action="{% url 'post_delete' post.id %}" method="post" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
+        <a href="{% url 'posts' %}" class="btn">Back to Posts</a>
+    </article>
+{% endblock %}
