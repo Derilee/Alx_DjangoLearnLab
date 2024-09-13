@@ -25,6 +25,7 @@ STATICFILES_DIRS = [
 TEMPLATES = [
     {
         'DIRS': [BASE_DIR / 'blog/templates'],
+        'DIRS': [BASE_DIR / 'blog/templates/blog'],
     },
 ]
 
