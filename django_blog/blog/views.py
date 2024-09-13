@@ -61,7 +61,7 @@ class BlogDetailView(DetailView):
 class BlogCreateView(CreateView):
     model = Post
     form_class = CreateUpdateBlogPost
-    template_name = 'blog/create_post.html'
+    template_name = 'blog/post_create.html'
     context_object_name = 'post'
     success_url = reverse_lazy('post_detail')
 
@@ -72,7 +72,7 @@ class BlogCreateView(CreateView):
 class BlogUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
     form_class = CreateUpdateBlogPost
-    template_name = 'blog/update_post.html'
+    template_name = 'blog/post_update.html'
     context_object_name = 'post'
     success_url = reverse_lazy('posts')
 
@@ -82,7 +82,7 @@ class BlogUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
 class BlogDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Post
-    template_name = 'blog/confirm_delete.html'
+    template_name = 'blog/post_delete.html'
     context_object_name = 'post'
     success_url = reverse_lazy('posts')
 
