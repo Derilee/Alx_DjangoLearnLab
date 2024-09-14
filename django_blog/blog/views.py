@@ -56,6 +56,10 @@ class BlogDetailView(DetailView):
     template_name = 'blog/post_detail.html'
     context_object_name = 'post'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['comment'] = CommentForm()
+        return context
 
 @method_decorator(login_required, name='dispatch')
 class BlogCreateView(CreateView):
@@ -97,41 +101,35 @@ class CommentCreateView(CreateView):
     template_name = 'blog/post_detail.html'
     context_object_name = 'comment'
 
-    def get_success_url(self):
-        return reverse_lazy('post_detail', kwargs={'pk': self.object.post.pk})
-
     def form_valid(self, form):
-        form.instance.post = Post.objects.get(id=self.kwargs['post_id'])
         form.instance.author = self.request.user
+        form.instance.post_id = self.kwargs['post_id']
         return super().form_valid(form)
 
+    def get_success_url(self):
+        return reverse_lazy('post_detail', kwargs={'pk': self.kwargs['post_id']})
+    
 class CommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Comment
     form_class = CommentForm
     template_name = 'blog/edit_comment.html'
     context_object_name = 'comment'
 
-    def get_success_url(self):
-        return reverse_lazy('post_detail', kwargs={'pk': self.object.post.pk})
-    
-    def get_object(self):
-        return Comment.objects.get(id=self.kwargs['comment_id'])
-
     def test_func(self):
         comment = self.get_object()
         return self.request.user == comment.author
+    
+    def get_success_url(self):
+        return reverse_lazy('post_detail', kwargs={'pk': self.object.post.id})
     
 class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Comment
     template_name = 'blog/delete_comment.html'
     context_object_name = 'comment'
-
-    def get_success_url(self):
-        return reverse_lazy('post_detail', kwargs={'pk':self.object.post.pk})
-
-    def get_object(self):
-        return Comment.objects.get(id=self.kwargs['comment_id'])
     
     def test_func(self):
         comment = self.get_object()
         return self.request.user == comment.author
+    
+    def get_success_url(self):
+        return reverse_lazy('post_detail', kwargs={'pk': self.object.post.id})

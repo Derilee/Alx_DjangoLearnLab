@@ -27,8 +27,8 @@
                             <p>{{ comment.content }}</p>
                             <small>{{ comment.created_at|date:"F j, Y, g:i a" }}</small>
                             {% if comment.author == user %}
-                                <a href="{% url 'edit_comment' post.id comment.id %}">Edit</a> | 
-                                <a href="{% url 'delete_comment' post.id comment.id %}">Delete</a>
+                                <a href="{% url 'edit_comment' pk=comment.pk %}">Edit</a> | 
+                                <a href="{% url 'delete_comment' pk=comment.pk %}">Delete</a>
                             {% endif %}
                         </li>
                     {% endfor %}
