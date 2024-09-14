@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.forms import ModelForm
 from django import forms
-from .models import UserProfile, Post
+from .models import UserProfile, Post, Comment
 
 class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(required=True)
@@ -33,3 +33,10 @@ class CreateUpdateBlogPost(ModelForm):
     class Meta:
         model = Post
         fields = ['title', 'content']
+
+
+class CommentForm(ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['content']
+
