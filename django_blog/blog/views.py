@@ -1,16 +1,18 @@
+from django.db.models.query import QuerySet
 from django.forms import BaseModelForm
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from .forms import CustomUserCreationForm, UserProfileForm, UserProfileExtendedForm, CreateUpdateBlogPost, CommentForm
+from .forms import CustomUserCreationForm, UserProfileForm, UserProfileExtendedForm, PostForm, CommentForm
 from .models import UserProfile, Post, Comment
 from django.views import generic, View
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
 from django.urls import reverse_lazy
+from django.db.models import Q
 
 
 def home(request):
@@ -28,6 +30,10 @@ def register(request):
         form = CustomUserCreationForm()
     return render(request, 'blog/register.html', {'form':form})
 
+class LogoutView(View):
+    def get(self, request):
+        logout(request)
+        return redirect('login')
 
 @login_required
 def profile (request):
@@ -69,7 +75,7 @@ class BlogDetailView(DetailView):
 @method_decorator(login_required, name='dispatch')
 class BlogCreateView(CreateView):
     model = Post
-    form_class = CreateUpdateBlogPost
+    form_class = PostForm
     template_name = 'blog/post_create.html'
     context_object_name = 'post'
     success_url = reverse_lazy('posts')
@@ -81,7 +87,7 @@ class BlogCreateView(CreateView):
 
 class BlogUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
-    form_class = CreateUpdateBlogPost
+    form_class = PostForm
     template_name = 'blog/post_update.html'
     context_object_name = 'post'
     success_url = reverse_lazy('posts')
@@ -143,3 +149,31 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     
     def get_success_url(self):
         return reverse_lazy('post_detail', kwargs={'pk': self.object.post.id})
+
+
+# def posts_by_tag(request, tag_name):
+#     tag_name = tag_name.replace('-', ' ')
+#     posts = Post.objects.filter(tags__name__iexact=tag_name)
+#     return render(request, 'post_by_tag.html', {'tag_name': tag_name, 'posts': posts})
+
+class TaggedPostListView(ListView):
+    model = Post
+    template_name = 'blog/tagged_post.html'
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        tag_name = self.kwargs['tag_name']
+        return Post.objects.filter(tag__name=tag_name)
+class SearchPostListView(ListView):
+    model = Post
+    template_name = 'blog/search.html'
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if query:
+            results = Post.objects.filter(
+                Q(title__icontains=query) | Q(content__icontains=query) | Q(tags__icontains=query)
+                )
+        else:
+            results = Post.objects.none()
