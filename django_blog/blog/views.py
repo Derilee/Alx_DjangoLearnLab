@@ -174,7 +174,7 @@ class PostByTagListView(ListView):
 
     def get_queryset(self):
         query = self.request.GET.get('q', '')
-        return Post.objects.filter(tags__slug__icontains=query)
+        return Post.objects.filter(tags__name__icontains=query)
 
 class SearchPostListView(ListView):
     model = Post
