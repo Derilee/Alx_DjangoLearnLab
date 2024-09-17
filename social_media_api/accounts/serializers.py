@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import User
 from django.contrib.auth import authenticate
-
+from rest_framework.authtoken.models import Token
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -16,13 +16,24 @@ class RegisterSerializer(serializers.ModelSerializer):
         model = User
         fields = ['username', 'email', 'password']
 
+#this method creates a user and generates a token after the user is created
     def create(self, validated_data):
         user = User.objects.create_user(
             username = validated_data['username'],
             email = validated_data['email'],
-            password = validated_data['password'],
-            )
+            password = validated_data['password']
+        )
+        Token.objects.create(user=user)
         return user
+
+#the commented method below creates a user alone
+    # def create(self, validated_data):
+    #     user = User.objects.create_user(
+    #         username = validated_data['username'],
+    #         email = validated_data['email'],
+    #         password = validated_data['password'],
+    #         )
+    #     return user
 
 
 class LoginSerializer(serializers.Serializer):
