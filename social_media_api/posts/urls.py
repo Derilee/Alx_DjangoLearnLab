@@ -9,6 +9,6 @@ router.register(r'posts', PostViewSet, basename='post')
 router.register(r'comments', CommentViewSet, basename='comment')
 
 urlpatterns = [
-    path('api/', include(router.urls)),
+    path('', include(router.urls)),
     path('api/posts-token-auth/', obtain_auth_token, name='posts-token-auth'),
 ]
