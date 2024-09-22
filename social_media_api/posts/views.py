@@ -48,11 +48,11 @@ class FeedViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        following_user = user.following.all()
-        return Post.objects.filter(user__in=following_user).order_by('-created_at')
+        following_users = user.following.all()
+        return Post.objects.filter(user__in=following_users).order_by('-created_at')
     
 #wrong code below
     # def get_queryset(self):
     #     author = self.request.user
-    #     following_user = author.following.all()
-    #     return Post.objects.filter(author__in=following_user).order_by('-created_at')
+    #     following_users = author.following.all()
+    #     return Post.objects.filter(author__in=following_users).order_by('-created_at')
