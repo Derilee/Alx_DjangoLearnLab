@@ -14,7 +14,8 @@ from rest_framework import permissions
 
 
 class RegisterView(generics.CreateAPIView):
-    queryset = get_user_model().objects.all()
+    CustomUser = User
+    queryset = CustomUser.objects.all()
     serializer_class = RegisterSerializer
     permission_classes = [AllowAny]
 
