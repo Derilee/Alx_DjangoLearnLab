@@ -12,5 +12,5 @@ router.register(r'feed', FeedViewSet, basename='feed')
 urlpatterns = [
     path('', include(router.urls)),
     path('api/posts-token-auth/', obtain_auth_token, name='posts-token-auth'),
-    # path('feed/', FeedViewSet.as_view(), name='feed')
+    # path('feed/', FeedViewSet.as_view(), name='feed'),
 ]
