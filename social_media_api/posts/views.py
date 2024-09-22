@@ -7,6 +7,7 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticate
 from rest_framework.authentication import TokenAuthentication
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.pagination import PageNumberPagination, LimitOffsetPagination
+from rest_framework import permissions
 
 
 class PostPagination(PageNumberPagination):
@@ -42,10 +43,16 @@ class CommentViewSet(viewsets.ModelViewSet):
 class FeedViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
     authentication_classes = [TokenAuthentication]
 
     def get_queryset(self):
         user = self.request.user
         following_user = user.following.all()
         return Post.objects.filter(user__in=following_user).order_by('-created_at')
+    
+#wrong code below
+    # def get_queryset(self):
+    #     author = self.request.user
+    #     following_user = author.following.all()
+    #     return Post.objects.filter(author__in=following_user).order_by('-created_at')
