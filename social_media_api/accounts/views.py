@@ -8,10 +8,12 @@ from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework import status
+from django.contrib.auth import get_user_model
+
 
 
 class RegisterView(generics.CreateAPIView):
-    queryset = User.objects.all()
+    queryset = get_user_model().objects.all()
     serializer_class = RegisterSerializer
     permission_classes = [AllowAny]
 
@@ -36,7 +38,7 @@ class ProfileView(generics.RetrieveAPIView):
         return self.request.user
     
 
-class follow_userView(APIView):
+class follow_userView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, user_id):
@@ -46,7 +48,7 @@ class follow_userView(APIView):
         return Response({f"You are now following {target_user.username}."}, status=status.HTTP_200_OK)
     
 
-class unfollow_userView(APIView):
+class unfollow_userView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, user_id):
